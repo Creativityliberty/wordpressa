@@ -4,7 +4,7 @@ services:
     env: node
     region: oregon
     buildCommand: npm install
-    startCommand: node wp-api-backend/index.js
+    startCommand: node index.js
     envVars:
       - key: WP_USERNAME
         value: ""
