@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: sirius-auth-api
+    env: node
+    region: oregon
+    buildCommand: npm install
+    startCommand: npm start
+    nodeVersion: "16"
+    envVars:
+      - key: FB_APP_ID
+        value: ""
+      - key: FB_APP_SECRET
+        value: ""
+      - key: REDIRECT_URI
+        value: ""
