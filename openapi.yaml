@@ -1,0 +1,49 @@
+openapi: 3.1.0
+info:
+  title: Sirius Auth API
+  version: 1.0.0
+  description: API pour gérer l'authentification Facebook et publier sur Instagram.
+servers:
+  - url: https://TON_RENDER.onrender.com
+paths:
+  /pages:
+    get:
+      operationId: getFacebookPages
+      summary: Récupère les pages Facebook de l'utilisateur.
+      responses:
+        '200':
+          description: Liste des pages Facebook
+  /instagram:
+    get:
+      operationId: getInstagramAccount
+      summary: Récupère le compte Instagram lié à une page Facebook.
+      parameters:
+        - name: page_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ID du compte Instagram
+  /post:
+    post:
+      operationId: postToInstagram
+      summary: Publie une image sur Instagram.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - image_url
+                - caption
+              properties:
+                image_url:
+                  type: string
+                caption:
+                  type: string
+      responses:
+        '200':
+          description: Post publié avec succès
