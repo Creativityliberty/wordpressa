@@ -5,7 +5,6 @@ services:
     region: oregon
     buildCommand: npm install
     startCommand: npm start
-    nodeVersion: "18"
     envVars:
       - key: FB_APP_ID
         value: ""
