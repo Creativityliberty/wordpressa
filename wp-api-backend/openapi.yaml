@@ -1,72 +1,42 @@
 openapi: 3.1.0
 info:
-  title: WordPress API Proxy
+  title: Public Blog API
   version: 1.0.0
-  description: Proxy backend vers l'API REST WordPress (via Render)
+  description: Accès public aux articles WordPress
 servers:
-  - url: https://wordpressa.onrender.com
+  - url: https://wordpressa.onrender.com/wp-json/wp/v2
 paths:
   /posts:
     get:
-      operationId: getPosts
-      summary: Liste les articles
-      responses:
-        '200':
-          description: Articles listés
-    post:
-      operationId: createPost
-      summary: Crée un nouvel article
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [title, content, status]
-              properties:
-                title:
-                  type: string
-                content:
-                  type: string
-                status:
-                  type: string
-                  enum: [draft, publish]
-      responses:
-        '201':
-          description: Article créé
-  /posts/{id}:
-    get:
-      operationId: getPostById
-      summary: Récupère un article par ID
+      operationId: getPublicPosts
+      summary: Récupère les derniers articles du blog
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: per_page
+          in: query
+          required: false
           schema:
             type: integer
-      responses:
-        '200':
-          description: Article trouvé
-    put:
-      operationId: updatePost
-      summary: Met à jour un article
-      parameters:
-        - name: id
-          in: path
-          required: true
+        - name: _fields
+          in: query
+          required: false
           schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                content:
-                  type: string
+            type: string
       responses:
         '200':
-          description: Article mis à jour
+          description: Liste des articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: object
+                      properties:
+                        rendered:
+                          type: string
+                    link:
+                      type: string
