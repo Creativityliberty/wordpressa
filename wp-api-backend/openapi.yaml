@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: Proxy backend vers l'API REST WordPress (via Render)
 servers:
-  - url: https://TON_BACKEND_RENDER.onrender.com
+  - url: https://wordpressa.onrender.com
 paths:
   /posts:
     get:
