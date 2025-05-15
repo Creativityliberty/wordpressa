@@ -1,0 +1,72 @@
+openapi: 3.1.0
+info:
+  title: WordPress API Proxy
+  version: 1.0.0
+  description: Proxy backend vers l'API REST WordPress (via Render)
+servers:
+  - url: https://TON_BACKEND_RENDER.onrender.com
+paths:
+  /posts:
+    get:
+      operationId: getPosts
+      summary: Liste les articles
+      responses:
+        '200':
+          description: Articles listés
+    post:
+      operationId: createPost
+      summary: Crée un nouvel article
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, content, status]
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+                status:
+                  type: string
+                  enum: [draft, publish]
+      responses:
+        '201':
+          description: Article créé
+  /posts/{id}:
+    get:
+      operationId: getPostById
+      summary: Récupère un article par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Article trouvé
+    put:
+      operationId: updatePost
+      summary: Met à jour un article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+      responses:
+        '200':
+          description: Article mis à jour
