@@ -2,7 +2,9 @@ openapi: 3.1.0
 info:
   title: Public Blog API
   version: 1.0.0
-  description: Accès public aux articles WordPress
+  description: >
+    Accès public en lecture aux articles WordPress exposés via REST API. 
+    Supporte la récupération de la liste des articles ainsi que l'accès individuel via un ID.
 servers:
   - url: https://wordpressa.onrender.com/wp-json/wp/v2
 paths:
@@ -13,11 +15,13 @@ paths:
       parameters:
         - name: per_page
           in: query
+          description: Nombre d'articles à récupérer (max 100)
           required: false
           schema:
             type: integer
         - name: _fields
           in: query
+          description: Champs spécifiques à inclure (ex: title,link)
           required: false
           schema:
             type: string
@@ -27,16 +31,53 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    title:
-                      type: object
-                      properties:
-                        rendered:
-                          type: string
-                    link:
-                      type: string
+                $ref: '#/components/schemas/PostSummary'
+  /posts/{id}:
+    get:
+      operationId: getPostById
+      summary: Récupère un article complet par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Article trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostDetail'
+
+components:
+  schemas:
+    PostSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: object
+          properties:
+            rendered:
+              type: string
+        link:
+          type: string
+    PostDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: object
+          properties:
+            rendered:
+              type: string
+        content:
+          type: object
+          properties:
+            rendered:
+              type: string
+        link:
+          type: string
