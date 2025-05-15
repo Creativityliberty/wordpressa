@@ -5,10 +5,10 @@ services:
     region: oregon
     buildCommand: npm install
     startCommand: node index.js
-    envVars:
-      - key: WP_USERNAME
-        value: ""
-      - key: WP_PASSWORD
-        value: ""
-      - key: WP_BASE_URL
-        value: ""
+envVars:
+  - key: WP_USERNAME
+    value: "numtema"
+  - key: WP_PASSWORD
+    value: "lzxaIEgFEIMINjiP2UJsUNuI"
+  - key: WP_BASE_URL
+    value: "https://numtemaagency.com/wp-json/wp/v2"
