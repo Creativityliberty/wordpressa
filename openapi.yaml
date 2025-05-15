@@ -1,45 +1,70 @@
 openapi: 3.1.0
 info:
-  title: Public Blog API
+  title: API Publique Blog WordPress
   version: 1.0.0
   description: >
-    Accès public en lecture aux articles WordPress exposés via REST API. 
-    Supporte la récupération de la liste des articles ainsi que l'accès individuel via un ID.
+    Accès public en lecture aux articles WordPress du site wordpressa.onrender.com.
+    Permet de lister les articles et consulter un article précis via son ID.
 servers:
   - url: https://wordpressa.onrender.com/wp-json/wp/v2
+tags:
+  - name: Blog
+    description: Gestion des articles publics du blog WordPress
+
 paths:
   /posts:
     get:
+      tags:
+        - Blog
       operationId: getPublicPosts
       summary: Récupère les derniers articles du blog
+      description: >
+        Renvoie une liste paginée des articles publiés.
+        Permet également de filtrer les champs via `_fields`.
       parameters:
         - name: per_page
           in: query
-          description: Nombre d'articles à récupérer (max 100)
+          description: Nombre d’articles à renvoyer (max 100)
           required: false
           schema:
             type: integer
         - name: _fields
           in: query
-          description: Champs spécifiques à inclure (ex: title,link)
+          description: Champs spécifiques à inclure dans la réponse (ex: title, link)
           required: false
           schema:
             type: string
       responses:
         '200':
-          description: Liste des articles
+          description: Liste des articles WordPress
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostSummary'
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostSummary'
+              examples:
+                success:
+                  summary: Exemple d’articles
+                  value:
+                    - id: 1
+                      title:
+                        rendered: "Créer une offre irrésistible"
+                      link: "https://wordpressa.onrender.com/creer-une-offre"
+
   /posts/{id}:
     get:
+      tags:
+        - Blog
       operationId: getPostById
       summary: Récupère un article complet par ID
+      description: >
+        Fournit les détails d’un article spécifique en utilisant son ID.
       parameters:
         - name: id
           in: path
           required: true
+          description: ID de l'article WordPress à récupérer
           schema:
             type: integer
       responses:
@@ -49,6 +74,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PostDetail'
+              examples:
+                success:
+                  summary: Exemple d’article unique
+                  value:
+                    id: 2
+                    title:
+                      rendered: "Comment engager ton audience en 3 secondes"
+                    content:
+                      rendered: "<p>Cet article détaille les techniques d'accroche...</p>"
+                    link: "https://wordpressa.onrender.com/engager-ton-audience"
 
 components:
   schemas:
@@ -57,27 +92,35 @@ components:
       properties:
         id:
           type: integer
+          example: 1
         title:
           type: object
           properties:
             rendered:
               type: string
+              example: "Créer une offre irrésistible"
         link:
           type: string
+          example: "https://wordpressa.onrender.com/creer-une-offre"
+
     PostDetail:
       type: object
       properties:
         id:
           type: integer
+          example: 2
         title:
           type: object
           properties:
             rendered:
               type: string
+              example: "Comment engager ton audience en 3 secondes"
         content:
           type: object
           properties:
             rendered:
               type: string
+              example: "<p>Cet article vous montre comment captiver votre audience en un instant...</p>"
         link:
           type: string
+          example: "https://wordpressa.onrender.com/engager-ton-audience"
